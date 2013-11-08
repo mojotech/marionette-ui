@@ -20,7 +20,8 @@ do (Marionette) ->
       {model, collection} = @view
 
       _.each @widgets, (definition, name) =>
-        widgetView = new Marionette.UI.Widgets[definition.widget] {model, collection}
+        options = _.extend {}, {model, collection}, definition
+        widgetView = new Marionette.UI.Widgets[definition.widget](options)
         @get(name).show widgetView
 
   originalConstructor = Marionette.View::constructor

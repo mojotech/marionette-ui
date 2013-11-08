@@ -49,11 +49,12 @@
           _this = this;
         _ref1 = this.view, model = _ref1.model, collection = _ref1.collection;
         return _.each(this.widgets, function(definition, name) {
-          var widgetView;
-          widgetView = new Marionette.UI.Widgets[definition.widget]({
+          var options, widgetView;
+          options = _.extend({}, {
             model: model,
             collection: collection
-          });
+          }, definition);
+          widgetView = new Marionette.UI.Widgets[definition.widget](options);
           return _this.get(name).show(widgetView);
         });
       };
