@@ -1,12 +1,20 @@
-#= require "_helper"
+@MU = do (Backbone, Marionette) ->
+  App = new Marionette.Application()
+  App.addRegions
+    page: '#page'
 
-# requirejs makes life a lot easier when dealing with more than one
-# javascript file and any sort of dependencies, and loads faster.
+  App.addInitializer ->
+    App.currentUser = new Backbone.Model
+      name: "Aaron Snyder"
+      age: 23
+      hometown: "Old Saybrook, CT"
+      current_town: "Providence, RI"
 
-# for more info on require config, see http://requirejs.org/docs/api.html#config
-require.config
-  paths:
-    jquery: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min'
+  App.on "initialize:after", ->
+    App.page.show new App.Views.Demo
+      model: App.currentUser
 
-require ['jquery'], ($) ->
-  console.log 'jquery loaded (via assets/js/main.coffee)'
+  App
+
+$ ->
+  MU.start()
