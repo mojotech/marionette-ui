@@ -8,3 +8,15 @@ p Most widgets are bound to collections. Unless otherwise mentioned they will au
 
 #page
 script(id="page-template", type="text/template")
+  ul.widgets
+    li
+      h3 Live input
+      .live-input
+      pre
+        |  widgets:
+        |    homeTown:
+        |      selector: ".home-town-input"
+        |      widget: 'ModelView'
+        |      attribute: 'hometown' //the model attribute that the input is bound to
+        |      liveUpdate: true //saves the model on keyup
+        |      closeOnEnter: false //closes the view when a user presses enter
