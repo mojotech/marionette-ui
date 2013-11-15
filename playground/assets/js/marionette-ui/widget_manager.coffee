@@ -4,8 +4,8 @@ do (Marionette) ->
 
   class Marionette.UI.WidgetManager extends Marionette.RegionManager
     initialize: (options={}) ->
-      @view = options.view
-      @widgets = options.widgets
+      {@view, @widgets} = options
+      _.each @widgets, (definition, name, widgets) -> widgets[name].selector ?= ".#{name}"
       @_initializeWidgets()
 
     _initializeWidgets: ->
@@ -16,12 +16,20 @@ do (Marionette) ->
 
       @addRegions @widgets, defaults
 
+    _ensureSelectorElement: (widgetName, selector) ->
+      unless @view.$(selector).length > 0
+        @view.$el.append $('<div />', class: widgetName)
+
     showWidgets: =>
       {model, collection} = @view
 
       _.each @widgets, (definition, name) =>
         options = _.extend {}, {model, collection}, definition
+
         widgetView = new Marionette.UI.Widgets[definition.widget](options)
+
+        @_ensureSelectorElement name, definition.selector
+
         @get(name).show widgetView
 
   originalConstructor = Marionette.View::constructor
