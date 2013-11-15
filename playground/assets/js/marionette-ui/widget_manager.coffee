@@ -3,6 +3,8 @@ do (Marionette) ->
   Marionette.UI.Widgets ?= {}
 
   class Marionette.UI.WidgetManager extends Marionette.RegionManager
+    widgetContainer: '.mu-widget-container'
+
     initialize: (options={}) ->
       {@view, @widgets} = options
       _.each @widgets, (definition, name, widgets) -> widgets[name].selector ?= ".#{name}"
@@ -16,9 +18,13 @@ do (Marionette) ->
 
       @addRegions @widgets, defaults
 
-    _ensureSelectorElement: (widgetName, selector) ->
-      unless @view.$(selector).length > 0
-        @view.$el.append $('<div />', class: widgetName)
+    _ensureSelectorElement: (name, definition) ->
+      unless @view.$(definition.selector).length > 0
+        widgetRegion = $('<div />', class: name)
+        if (container = @view.$(@widgetContainer)).length > 0
+          container.append widgetRegion
+        else
+          @view.$el.append widgetRegion
 
     showWidgets: =>
       {model, collection} = @view
@@ -28,7 +34,7 @@ do (Marionette) ->
 
         widgetView = new Marionette.UI.Widgets[definition.widget](options)
 
-        @_ensureSelectorElement name, definition.selector
+        @_ensureSelectorElement name, definition
 
         @get(name).show widgetView
 
