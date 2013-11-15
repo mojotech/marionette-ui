@@ -8,3 +8,14 @@
         widget: 'Input'
         attribute: 'hometown'
         liveUpdate: true
+
+      modelView:
+        selector: ".model-view"
+        widget: 'ModelView'
+
+      editableModelView:
+        selector: ".editable-model-view"
+        widget: 'ModelView'
+        editable: true
+        attributeMap:
+          'current_town': 'Current Town'
