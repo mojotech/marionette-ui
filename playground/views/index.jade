@@ -20,3 +20,22 @@ script(id="page-template", type="text/template")
         |      attribute: 'hometown' //the model attribute that the input is bound to
         |      liveUpdate: true //saves the model on keyup
         |      closeOnEnter: false //closes the view when a user presses enter
+    li
+      h3 Model View
+      p How many times do we just want to render a view that contains all the model attributes?
+      .model-view
+      pre
+        |  widgets:
+        |    user:
+        |      selector: ".user"
+        |      widget: 'ModelView'
+    li
+      h3 Editable Model View
+      p Now how about clicking any attribute to update it, live?
+      .editable-model-view
+      pre
+        |  widgets:
+        |    editableUser:
+        |      selector: ".editable-user"
+        |      widget: 'ModelView'
+        |      editable: true
