@@ -3,7 +3,8 @@ do (Marionette) ->
   Marionette.UI.Widgets ?= {}
 
   class Marionette.UI.WidgetManager extends Marionette.RegionManager
-    widgetContainer: '.mu-widget-container'
+    widgetContainer:   '.mu-widget-container'
+    widgetEventPrefix: 'widget'
 
     initialize: (options={}) ->
       {@view, @widgets} = options
@@ -36,7 +37,18 @@ do (Marionette) ->
 
         @_ensureSelectorElement name, definition
 
+        @addWidgetEventForwarding widgetView
         @get(name).show widgetView
+
+    addWidgetEventForwarding: (widgetView) ->
+      prefix = Marionette.getOption(@view, 'widgetEventPrefix') ? @widgetEventPrefix
+
+      @view.listenTo widgetView, 'all', =>
+        args = Array::slice.apply(arguments)
+        args[0] = "#{prefix}:#{args[0]}"
+        args.splice 1, 0, widgetView
+
+        Marionette.triggerMethod.apply @view, args
 
   originalConstructor = Marionette.View::constructor
   Marionette.View::constructor = ->
