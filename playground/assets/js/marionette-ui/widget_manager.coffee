@@ -9,6 +9,7 @@ do (Marionette) ->
     initialize: (options={}) ->
       {@view, @widgets} = options
       _.each @widgets, (definition, name, widgets) -> widgets[name].selector ?= ".#{name}"
+      @view.widgets = {}
       @_initializeWidgets()
 
     _initializeWidgets: ->
@@ -39,6 +40,7 @@ do (Marionette) ->
 
         @addWidgetEventForwarding widgetView
         @get(name).show widgetView
+        @view.widgets[name] = widgetView
 
     addWidgetEventForwarding: (widgetView) ->
       prefix = Marionette.getOption(@view, 'widgetEventPrefix') ? @widgetEventPrefix
